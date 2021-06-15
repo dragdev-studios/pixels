@@ -2,6 +2,7 @@ import asyncio
 import io
 import json
 import logging
+import os
 import secrets
 import traceback
 import typing as t
@@ -21,7 +22,7 @@ from fastapi.templating import Jinja2Templates
 from httpx import AsyncClient
 from jose import JWTError, jwt
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, HTMLResponse
 
 from pixels import constants
 from pixels.canvas import Canvas
@@ -272,11 +273,10 @@ async def reset_user_token(conn: Connection, user_id: str) -> str:
 @app.get("/", tags=["General Endpoints"], include_in_schema=False)
 async def info(request: Request) -> Response:
     """
-    Redirect index page to /info.
-
-    /info is served upstream.
+    This *would* refer users to /info, however we don't have /info upstream.
     """
-    return RedirectResponse(url="/info", status_code=301)
+    with open("./pixels/static/info.html") as info_file:
+        return HTMLResponse(info_file.read())
 
 
 @app.get("/docs", tags=["General Endpoints"], include_in_schema=False)
