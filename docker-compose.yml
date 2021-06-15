@@ -33,7 +33,7 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:8000:80"
+      - "0.0.0.0:8000:80"
     environment:
       DATABASE_URL: postgres://pypixels:pypixels@postgres:5432/pypixels
       REDIS_URL: redis://redis:6379
